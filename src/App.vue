@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     this si test
-    <h3>ceshi </h3>
+    <h3>ceshi 1234123</h3>
   </div>
 </template>
 
@@ -9,10 +9,13 @@
 export default {
   name: 'app',
   data() {
-    return {
+    return  {
     }
+  },
+  mounted() {
+
   }
-}
+};
 </script>
 
 <style>
