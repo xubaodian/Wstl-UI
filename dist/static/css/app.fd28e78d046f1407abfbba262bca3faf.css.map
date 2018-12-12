@@ -1,0 +1,1 @@
+{"version":3,"sources":["app.fd28e78d046f1407abfbba262bca3faf.css"],"names":[],"mappings":"AACA,KACE,oDAAsD,AACtD,WAAW,AACX,YAAY,AACZ,yBAA0B,CAC3B","file":"app.fd28e78d046f1407abfbba262bca3faf.css","sourcesContent":["\n#app{\r\n  background:url(./static/img/bk.9b4058e.jpg) no-repeat;\r\n  width:100%;\r\n  height:100%;\r\n  background-size:100% 100%;\n}\r\n"]}
