@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const ora = require('ora');
 const rm = require('rimraf');
@@ -60,6 +61,7 @@ let cssLoaders = function (options) {
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
   return {
     css: generateLoaders(),
+    postcss: generateLoaders(),
     less: generateLoaders('less')
   }
 }
@@ -69,7 +71,7 @@ let prodConfig = {
   context: path.resolve(__dirname, '../'),
   //解析入口，可配置多个入口起点
   entry: {
-    app: path.resolve(__dirname, '../src/index.js')
+    index: path.resolve(__dirname, '../src/index.js')
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
@@ -84,6 +86,7 @@ let prodConfig = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': path.resolve(__dirname, '../src'),
+      '@lib': path.resolve(__dirname, '../lib')
     }
   },
   //源码映射
@@ -126,76 +129,88 @@ let prodConfig = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: cssLoaders({
-            sourceMap: true,
-            extract: true
-          }),
-          cssSourceMap: true,
-          cacheBusting: true,
-          transformToRequire: {
-            video: ['src', 'poster'],
-            source: 'src',
-            img: 'src',
-            image: 'xlink:href'
-          }
+          loaders: {
+            css: ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use: 'css-loader'
+            }),
+            postcss: ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use: 'postcss-loader'
+            }),
+            less:  ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use: 'less-loader'
+            })
+          },
+          extractCSS: true
         }
+        // options: {
+        //   loaders: cssLoaders({
+        //     sourceMap: true,
+        //     extract: true
+        //   }),
+        //   cssSourceMap: true,
+        //   cacheBusting: true,
+        //   transformToRequire: {
+        //     video: ['src', 'poster'],
+        //     source: 'src',
+        //     img: 'src',
+        //     image: 'xlink:href'
+        //   }
+        // }
       },
       //css文件loader
       {
         test: /\.css$/,
-        use: [
-            ...ExtractTextPlugin.extract({
-              fallback: 'vue-style-loader',
-              use: 'css-loader'
-            }),
-            {
-              loader: 'vue-style-loader'
-            },
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true
-              }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                sourceMap: true
-              }
-            }
-        ]
+        loaders: ['style-loader', 'css-loader', 'postcss-loader']
       },
       {
         test: /\.less$/,
-        use: [
-            ...ExtractTextPlugin.extract({
-              fallback: "vue-style-loader",
-              use: "less-loader"
-            }),
-            {
-              loader: 'vue-style-loader'
-            },
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true
-              }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                sourceMap: true
-              }
-            }
-        ]
+        loaders: ['style-loader', 'css-loader', 'less-loader']
       },
+      // {
+      //   test: /\.css$/,
+      //   use: [
+      //       ...ExtractTextPlugin.extract({
+      //         fallback: 'vue-style-loader',
+      //         use: 'css-loader'
+      //       }),
+      //       {
+      //         loader: 'css-loader'
+      //       }
+      //       // ,
+      //       // {
+      //       //   loader: 'postcss-loader'
+      //       // }
+      //   ]
+      // },
+      // {
+      //   test: /\.less$/,
+      //   use: [
+      //       ...ExtractTextPlugin.extract({
+      //         fallback: "vue-style-loader",
+      //         use: "less-loader"
+      //       }),
+      //       {
+      //         loader: 'vue-style-loader'
+      //       },
+      //       {
+      //         loader: 'css-loader'
+      //       },
+      //       {
+      //         loader: 'postcss-loader'
+      //       }
+      //   ]
+      // },
       //图片编译，图片小于固定尺寸就采用base64编码
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: path.posix.join('static', '/img/[name].[hash:7].[ext]')
+          name: path.posix.join('static', '/img/[name].[hash:7].[ext]'),
+          publicPath: '../../'
         }
       },
       //视频编译
@@ -204,7 +219,8 @@ let prodConfig = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: path.posix.join('static', '/media/[name].[hash:7].[ext]')
+          name: path.posix.join('static', '/media/[name].[hash:7].[ext]'),
+          publicPath: '../../'
         }
       },
        //视频编译
@@ -213,7 +229,8 @@ let prodConfig = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: path.posix.join('static', '/fonts/[name].[hash:7].[ext]')
+          name: path.posix.join('static', '/fonts/[name].[hash:7].[ext]'),
+          publicPath: '../../'
         }
       }
     ]
@@ -223,6 +240,10 @@ let prodConfig = {
       'process.env': {
         NODE_ENV: '"production"'
       }
+    }),
+    //每次构建先删除上次的构建文件
+    new CleanWebpackPlugin(['dist'], {
+      root: path.resolve(__dirname, '../')
     }),
     //压缩减少文件
     new UglifyJsPlugin({
@@ -238,14 +259,8 @@ let prodConfig = {
     // 提取css文件
     new ExtractTextPlugin({
       filename: path.posix.join('static', '/css/[name].[contenthash].css'),
-      // Setting the following option to `false` will not extract CSS from codesplit chunks.
-      // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
-      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`, 
-      // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
       allChunks: true,
     }),
-    // Compress extracted CSS. We are using this plugin so that possible
-    // duplicated CSS from different components can be deduped.
     //压缩Css文件，尽可能去除重复样式
     new OptimizeCSSPlugin({
       cssProcessorOptions: {
@@ -255,9 +270,6 @@ let prodConfig = {
         } 
       }
     }),
-    // generate dist index.html with correct asset hash for caching.
-    // you can customize output by editing /index.html
-    // see https://github.com/ampedandwired/html-webpack-plugin
     //处理html文件
     new HtmlWebpackPlugin({
       filename: 'index.html',
@@ -271,13 +283,10 @@ let prodConfig = {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     }),
-    // keep module.id stable when vendor modules does not change
     //该插件会根据模块的相对路径生成一个四位数的hash作为模块id
     new webpack.HashedModuleIdsPlugin(),
-    // enable scope hoisting
     //预编译所有模块到一个闭包中，提升你的代码在浏览器中的执行速度
     new webpack.optimize.ModuleConcatenationPlugin(),
-    // split vendor js into its own file
     //提取公共的文件到一个包
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -298,9 +307,6 @@ let prodConfig = {
       name: 'manifest',
       minChunks: Infinity
     }),
-    // This instance extracts shared chunks from code splitted chunks and bundles them
-    // in a separate chunk, similar to the vendor chunk
-    // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
     new webpack.optimize.CommonsChunkPlugin({
       name: 'app',
       async: 'vendor-async',

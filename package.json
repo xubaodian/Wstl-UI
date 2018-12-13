@@ -7,11 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack --config config/webpack.dev.js",
     "dev": "webpack-dev-server --inline --progress --config config/webpack.dev",
-    "build": "node config/webpack.prod.js"
+    "build": "node config/webpack.prod.js",
+    "common": "node config/webpack.common.js",
+    "component": "node config/webpack.component.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "style-loader": "^0.23.1",
     "vue": "^2.5.2"
   },
   "devDependencies": {
@@ -30,6 +33,7 @@
     "chai": "^4.1.2",
     "chalk": "^2.0.1",
     "chromedriver": "^2.27.2",
+    "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^5.0.1",
     "cross-spawn": "^5.0.1",
@@ -52,6 +56,8 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.31",
     "karma-webpack": "^2.0.2",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
     "mocha": "^3.2.0",
     "nightwatch": "^0.9.12",
     "node-notifier": "^5.1.2",
@@ -59,8 +65,9 @@
     "ora": "^1.2.0",
     "phantomjs-prebuilt": "^2.1.14",
     "portfinder": "^1.0.13",
+    "postcss": "^7.0.6",
     "postcss-import": "^11.0.0",
-    "postcss-loader": "^2.0.8",
+    "postcss-loader": "^2.1.6",
     "postcss-url": "^7.2.1",
     "rimraf": "^2.6.0",
     "selenium-server": "^3.0.1",
@@ -70,10 +77,10 @@
     "sinon-chai": "^2.8.0",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
-    "vue-loader": "^13.3.0",
+    "vue-loader": "^13.7.3",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
-    "webpack": "^3.6.0",
+    "webpack": "^3.12.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"

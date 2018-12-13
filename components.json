@@ -1,0 +1,4 @@
+{
+  "search": "./packages/search/index",
+  "icon": "./packages/icon/index"
+}

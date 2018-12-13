@@ -1,11 +1,4 @@
-const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-let assetsPath = function (_path) {
-  const assetsSubDirectory = 'static';
-  return path.posix.join(assetsSubDirectory, _path)
-}
-
 let cssLoaders = function (options) {
   options = options || {}
 
@@ -51,47 +44,12 @@ let cssLoaders = function (options) {
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
   return {
     css: generateLoaders(),
-    postcss: generateLoaders(),
-    less: generateLoaders('less'),
-    sass: generateLoaders('sass', { indentedSyntax: true }),
-    scss: generateLoaders('sass'),
-    stylus: generateLoaders('stylus'),
-    styl: generateLoaders('stylus')
+    less: generateLoaders('less')
   }
 }
 
-// Generate loaders for standalone style files (outside of .vue)
-let styleLoaders = function (options) {
-  const output = []
-  const loaders = cssLoaders(options)
-
-  for (const extension in loaders) {
-    const loader = loaders[extension]
-    output.push({
-      test: new RegExp('\\.' + extension + '$'),
-      use: loader
-    })
-  }
-
-  return output;
-}
-
-
-console.log(path.posix.join('static', 'js/[name].[chunkhash].js'));
-
-let option = {
-  loaders: cssLoaders({
-    sourceMap: true,
-    extract: true
-  }),
-  cssSourceMap: true,
-  cacheBusting: true,
-  transformToRequire: {
-    video: ['src', 'poster'],
-    source: 'src',
-    img: 'src',
-    image: 'xlink:href'
-  }
-};
-
-console.log(path.posix.join('static', 'js/[name].[chunkhash].js'));
+let options = cssLoaders({
+  sourceMap: true,
+  extract: true
+});
+console.log('124');

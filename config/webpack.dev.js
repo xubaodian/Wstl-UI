@@ -49,6 +49,7 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': path.resolve(__dirname, '../src'),
+      '@lib': path.resolve(__dirname, '../lib')
     }
   },
   //源码映射
@@ -113,6 +114,15 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader'
+      },
+      //css文件loader
+      {
+        test: /\.css$/,
+        loaders: ['style-loader', 'css-loader', 'postcss-loader']
+      },
+      {
+        test: /\.less$/,
+        loaders: ['style-loader', 'css-loader', 'less-loader', 'postcss-loader']
       },
       //图片编译，图片小于固定尺寸就采用base64编码
       {
