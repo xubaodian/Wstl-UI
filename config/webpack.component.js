@@ -75,16 +75,16 @@ let prodConfig = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: {
-            css: ExtractTextPlugin.extract({
-              fallback: 'vue-style-loader',
-              use: 'css-loader'
-            }),
-            less:  ExtractTextPlugin.extract({
-              fallback: 'vue-style-loader',
-              use: 'css-loader!less-loader'
-            })
-          },
+          // loaders: {
+          //   css: ExtractTextPlugin.extract({
+          //     fallback: 'style-loader',
+          //     use: 'css-loader'
+          //   }),
+          //   less:  ExtractTextPlugin.extract({
+          //     fallback: 'style-loader',
+          //     use: 'css-loader!less-loader'
+          //   })
+          // },
           extractCSS: true
         }
       },
@@ -93,7 +93,7 @@ let prodConfig = {
         test: /\.css$/,
         use: [
             {
-              loader: 'vue-style-loader',
+              loader: 'style-loader',
               options: {
                 sourceMap: false
               }
@@ -116,7 +116,7 @@ let prodConfig = {
         test: /\.less$/,
         use: [
             {
-              loader: 'vue-style-loader',
+              loader: 'style-loader',
               options: {
                 sourceMap: false
               }

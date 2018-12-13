@@ -76,20 +76,20 @@ let prodConfig = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: {
-            css: ExtractTextPlugin.extract({
-              fallback: 'style-loader',
-              use: 'css-loader'
-            }),
-            postcss: ExtractTextPlugin.extract({
-              fallback: 'style-loader',
-              use: 'postcss-loader'
-            }),
-            less:  ExtractTextPlugin.extract({
-              fallback: 'style-loader',
-              use: 'less-loader'
-            })
-          },
+          // loaders: {
+          //   css: ExtractTextPlugin.extract({
+          //     fallback: 'style-loader',
+          //     use: 'css-loader'
+          //   }),
+          //   postcss: ExtractTextPlugin.extract({
+          //     fallback: 'style-loader',
+          //     use: 'postcss-loader'
+          //   }),
+          //   less:  ExtractTextPlugin.extract({
+          //     fallback: 'style-loader',
+          //     use: 'less-loader'
+          //   })
+          // },
           extractCSS: true
         }
       },
