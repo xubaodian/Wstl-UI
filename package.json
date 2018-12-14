@@ -2,7 +2,7 @@
   "name": "wstl-ui",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/wstl-ui.common.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack --config config/webpack.dev.js",

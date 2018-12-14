@@ -14,7 +14,7 @@ const install = function(Vue, opts = {}) {
   });
 };
 
-// auto install
+// 页面中引入文件时，自动安装插件
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
