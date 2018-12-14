@@ -1,7 +1,11 @@
 config文件夹下是webpack配置:<br>
+
 webpack.dev.js:启动example的webpack配置，example用来测试组件<br>
+
 webpack.prod.js:生成example的生产环境文件的webpack配置<br>
+
 webpack.common.js:打包组件库的webpack配置，所有组件生成一个js文件和一个css文件<br>
+
 webpack.component.js:分开打包组件的webpack配置，每个组件生成一个js文件和一个css文件<br>
 
 命令：<br>
