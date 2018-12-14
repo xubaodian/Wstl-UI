@@ -18,6 +18,9 @@ const install = function(Vue, opts = {}) {
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);
 }
+module.exports = {
+  Search,
+  install
+};
 
-export default { install };
-export { Search };
+module.exports.default = module.exports;

@@ -27,6 +27,7 @@ let prodConfig = {
     publicPath: './',
     filename: 'wstl-ui.common.js',
     chunkFilename: '[id].js',
+    //若要在在页面中直接应用库js文件，这个选项注释掉,重新打包
     libraryTarget: 'commonjs2'
   },
   resolve: {
