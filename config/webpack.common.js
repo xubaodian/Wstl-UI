@@ -28,7 +28,12 @@ let prodConfig = {
     filename: 'wstl-ui.common.js',
     chunkFilename: '[id].js',
     //若要在在页面中直接应用库js文件，这个选项注释掉,重新打包
-    libraryTarget: 'commonjs2'
+    library: {
+      root: "wstl-ui",
+      amd: "wstl-ui",
+      commonjs: "wstl-ui"
+    },
+    libraryTarget: "umd"
   },
   resolve: {
     //自动解析确定的扩展,引用test.vue/js/json，直接用import test from './test'，无需写后缀
