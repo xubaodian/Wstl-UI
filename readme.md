@@ -55,12 +55,6 @@ import 'wstl-ui/lib/index.css';
 Vue.use(WsltUI);
 ```
 2、直接在页面中应用
-先注释掉webpack.common.js配置文件中下面这行代码：<br>
-```javascript
-//若要在在页面中直接应用库js文件，这个选项注释掉,重新打包
-libraryTarget: 'commonjs2'
-```
-然后重新打包，在html中如下应用
 ```html
   //引用组件库样式
   <link href="./lib/index.css" rel="stylesheet"/>
